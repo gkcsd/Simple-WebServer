@@ -34,7 +34,8 @@ http.createServer((req, res) => {
     if(loadFile.isFile()) {
         var mimeType = mimeTypes[path.extname(filename).split('.').reverse()[0]];
         res.writeHead(200, {"Content-Type": mimeType});
-        res.end();
+        var filestream = fs.createReadStream(filename);
+        filestream.pipe(res);
     }else if(loadFile.isDirectory()) {
         res.writeHead(302, {Location: "index.html"})
         res.end();
